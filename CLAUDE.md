@@ -593,3 +593,47 @@ When working with this codebase:
 **Repository**: fun_and_profit_webscrape
 **Python Version**: 3.x (no specific version requirements)
 **Status**: Educational/Active Development
+
+
+
+Use case for substack marketing ideas:
+
+Here's a summary of what we covered:
+1. API Discovery with Browser DevTools
+
+Open DevTools → Network tab → Filter by Fetch/XHR
+Interact with the site (search, scroll, paginate)
+Watch for JSON responses - those are your hidden APIs
+Copy the request details to replicate in Python
+
+2. Substack's Architecture
+
+Archive API: /api/v1/archive?sort=new&limit=50&offset=0
+Search API: /api/v1/post/search
+Full content is embedded in page HTML inside window._preloads = JSON.parse("...")
+Paid content requires authentication via cookies
+
+3. Cookie-Based Authentication
+
+Get cookies from DevTools → Application → Cookies
+Key cookies: connect.sid and substack.sid
+Add them to your Python requests.Session()
+
+4. Parsing Nested/Escaped JSON
+
+Sometimes JSON is embedded as an escaped string inside another JSON
+Need to unescape (\" → ", \\ → \) before parsing
+Use regex to extract, then json.loads() to parse
+
+5. Debugging Strategy
+
+When scraping fails, save the raw HTML and inspect it
+Check what's actually in the page vs. what you expected
+Print intermediate values to trace the problem
+
+6. Rate Limiting & Politeness
+
+Add time.sleep() between requests
+Use a proper User-Agent header
+
+The key lesson: websites often have undocumented APIs that are much easier to scrape than parsing HTML directly - you just need to find them using DevTools.
